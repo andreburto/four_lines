@@ -49,6 +49,10 @@ class fourLines {
     b = int(random(0, 255));
   }
   
+  public void setStrokeColor(int r, int g, int b) {
+    this.r =r; this.g = g; this.b = b;
+  }
+  
   protected void updateChangeCounter() {
     if (changeCounter < 0)
       return;
@@ -59,7 +63,7 @@ class fourLines {
       changeCounter = 0;
       setStrokeColor();
       
-      float newCA = floor(random(1, 20));
+      float newCA = makeRandom(1, 20);
       for (int lc = 0; lc < lineList.size(); lc++) {
         lineList.get(lc).setChangeAmount(newCA);
       }
@@ -70,15 +74,28 @@ class fourLines {
     changeCounter = changeCount;
   }
   
+  public void actOnAllLines(LineAction action) {
+    for (int lc = 0; lc < lineList.size(); lc++) {
+      switch (action) {
+        case DRAWLINE:
+          lineList.get(lc).drawLine();
+          break;
+        case UPDATELINE:
+          lineList.get(lc).updateLine();
+          break;
+        default:
+          lineList.get(lc).updateLine();
+          lineList.get(lc).drawLine();
+      }
+    }
+  }
+  
   public void updateFourLines() {
     stroke(r, g, b);
     strokeWeight(strokeWidth);
     noFill();
     
-    for (int lc = 0; lc < lineList.size(); lc++) {
-      lineList.get(lc).drawLine();
-      lineList.get(lc).updateLine();
-    }
+    actOnAllLines(LineAction.BOTH);
     
     updateChangeCounter();
   }

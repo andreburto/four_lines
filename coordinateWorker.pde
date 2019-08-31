@@ -1,3 +1,13 @@
+class coordinate {
+  float x;
+  float y;
+  
+  public coordinate(float x, float y) {
+    this.x = x; 
+    this.y = y;
+  }
+}
+
 class coordinateWorker extends coordinate {
   protected float spaceWidth; 
   protected float spaceHeight;
