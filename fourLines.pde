@@ -27,10 +27,10 @@ class fourLines {
     
     // Four lines connected together
     lineList = new ArrayList<lineWorker>();
-    lineList.add(new lineWorker(c1, c2));
-    lineList.add(new lineWorker(c2, c3));
-    lineList.add(new lineWorker(c3, c4));
-    lineList.add(new lineWorker(c4, c1));
+    lineList.add(new lineWorker(c1, c2.copy()));
+    lineList.add(new lineWorker(c2, c3.copy()));
+    lineList.add(new lineWorker(c3, c4.copy()));
+    lineList.add(new lineWorker(c4, c1.copy()));
     
     // Initialize this objects line colors
     setStrokeColor();
