@@ -9,6 +9,9 @@ class lineWorker {
   
   public void drawLine() {
     line(cw1.x, cw1.y, cw2.x, cw2.y);
+  }
+  
+  public void updateLine() {
     cw1.updateLocation();
     cw2.updateLocation();
   }

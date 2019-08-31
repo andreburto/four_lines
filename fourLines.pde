@@ -7,8 +7,10 @@ class fourLines {
   
   // stroke colors
   int r; int g; int b;
-
+  
   public fourLines(float winWidth, float winHeight) {
+    strokeWidth = 1;
+    
     float centerX = floor(winWidth / 2);
     float centerY = floor(winHeight / 2);
     
@@ -32,6 +34,11 @@ class fourLines {
     setStrokeColor();
   }
   
+  public fourLines(float winWidth, float winHeight, int strokeWidth) {
+     this(winWidth, winHeight);
+     this.strokeWidth = strokeWidth;
+  }
+  
   protected float makeRandom(float top, float bottom) {
     return floor(random(top, bottom));
   }
@@ -42,15 +49,10 @@ class fourLines {
     b = int(random(0, 255));
   }
   
-  public void updateFourLines() {
-    stroke(r, g, b);
-    strokeWeight(strokeWidth);
-    noFill();
-    
-    for (int lc = 0; lc < lineList.size(); lc++) {
-      lineList.get(lc).drawLine();
-    }
-    
+  protected void updateChangeCounter() {
+    if (changeCounter < 0)
+      return;
+      
     changeCounter++;
     
     if (changeCounter == changeCounterMax) {
@@ -61,6 +63,23 @@ class fourLines {
       for (int lc = 0; lc < lineList.size(); lc++) {
         lineList.get(lc).setChangeAmount(newCA);
       }
-    } 
+    }
+  }
+  
+  public void setChangeCount(int changeCount) {
+    changeCounter = changeCount;
+  }
+  
+  public void updateFourLines() {
+    stroke(r, g, b);
+    strokeWeight(strokeWidth);
+    noFill();
+    
+    for (int lc = 0; lc < lineList.size(); lc++) {
+      lineList.get(lc).drawLine();
+      lineList.get(lc).updateLine();
+    }
+    
+    updateChangeCounter();
   }
 }
