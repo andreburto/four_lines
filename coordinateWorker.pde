@@ -23,47 +23,57 @@ class coordinateWorker extends coordinate {
     
     // setup initial directions
     if (x < floor(spaceWidth / 2)) {
-      this.horizontalD = Direction.LEFT; 
+      horizontalD = Direction.LEFT; 
     } else {
-      this.horizontalD = Direction.RIGHT;
+      horizontalD = Direction.RIGHT;
     }
     
     if (y < floor(spaceHeight / 2)) {
-      this.verticalD = Direction.DOWN; 
+      verticalD = Direction.DOWN; 
     } else {
-      this.verticalD = Direction.UP;
+      verticalD = Direction.UP;
     }
     
     // set initial change anount
-    this.changeAmount = 5;
+    changeAmount = 5;
   }
   
   protected void updateDirection() {
     // horizontal
-    if (this.x <= 0) { this.horizontalD = Direction.RIGHT; }
-    if (this.x >= this.spaceWidth) { this.horizontalD = Direction.LEFT; }
+    if (x <= 0) { horizontalD = Direction.RIGHT; }
+    if (x >= spaceWidth) { horizontalD = Direction.LEFT; }
     // vertical
-    if (this.y <= 0) { this.verticalD = Direction.DOWN; }
-    if (this.y >= this.spaceHeight) { this.verticalD = Direction.UP; }
+    if (y <= 0) { verticalD = Direction.DOWN; }
+    if (y >= spaceHeight) { verticalD = Direction.UP; }
   }
   
   protected void updateHorizontalLocation() {
-    if (this.horizontalD == Direction.RIGHT) { this.x = this.x + this.changeAmount; }
-    else { this.x = this.x - this.changeAmount; }
+    if (horizontalD == Direction.RIGHT) { x = x + changeAmount; }
+    else { x = x - changeAmount; }
   }
   
   protected void updateVerticalLocation() {
-    if (this.verticalD == Direction.UP) { this.y = this.y - this.changeAmount; }
-    else { this.y = this.y + this.changeAmount; }
+    if (verticalD == Direction.UP) { y = y - changeAmount; }
+    else { y = y + changeAmount; }
   }
   
   public void updateLocation() {
-    this.updateHorizontalLocation();
-    this.updateVerticalLocation();
-    this.updateDirection();
+    updateHorizontalLocation();
+    updateVerticalLocation();
+    updateDirection();
   }
   
   public void setChangeAmount(float newCA) {
-    this.changeAmount = newCA;
+    changeAmount = newCA;
+  }
+  
+  public float getChangeAmount() {
+    return changeAmount;
+  }
+  
+  public coordinateWorker copy() {
+    coordinateWorker copy = new coordinateWorker(x, y, spaceWidth, spaceHeight);
+    copy.setChangeAmount(changeAmount);
+    return copy;
   }
 }

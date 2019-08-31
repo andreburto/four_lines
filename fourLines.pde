@@ -1,3 +1,5 @@
+import java.lang.Cloneable;
+
 class fourLines {
   
   protected ArrayList<lineWorker> lineList;
@@ -39,8 +41,18 @@ class fourLines {
      this.strokeWidth = strokeWidth;
   }
   
+  protected void setLineList(ArrayList<lineWorker> lineList) {
+    this.lineList = lineList;
+  }
+  
   protected float makeRandom(float top, float bottom) {
     return floor(random(top, bottom));
+  }
+  
+  protected void setStroke() {
+    stroke(r, g, b);
+    strokeWeight(strokeWidth);
+    noFill();
   }
   
   protected void setStrokeColor() {
@@ -50,11 +62,11 @@ class fourLines {
   }
   
   public void setStrokeColor(int r, int g, int b) {
-    this.r =r; this.g = g; this.b = b;
+    this.r = r; this.g = g; this.b = b;
   }
   
   protected void updateChangeCounter() {
-    if (changeCounter < 0)
+    if (changeCounterMax < 0)
       return;
       
     changeCounter++;
@@ -62,7 +74,7 @@ class fourLines {
     if (changeCounter == changeCounterMax) {
       changeCounter = 0;
       setStrokeColor();
-      
+
       float newCA = makeRandom(1, 20);
       for (int lc = 0; lc < lineList.size(); lc++) {
         lineList.get(lc).setChangeAmount(newCA);
@@ -71,32 +83,57 @@ class fourLines {
   }
   
   public void setChangeCount(int changeCount) {
-    changeCounter = changeCount;
+    changeCounterMax = changeCount;
+  }
+  
+  public void setMoveRate(float moveRate) {
+    for (int lc = 0; lc < lineList.size(); lc++) {
+      lineList.get(lc).setChangeAmount(moveRate);
+    }
+  }
+  
+  public float getMoveRate() {
+    return lineList.get(0).getChangeAmount();
   }
   
   public void actOnAllLines(LineAction action) {
     for (int lc = 0; lc < lineList.size(); lc++) {
       switch (action) {
         case DRAWLINE:
+          print("DRAWLINE ");
           lineList.get(lc).drawLine();
           break;
         case UPDATELINE:
+          print("UPDATELINE ");
           lineList.get(lc).updateLine();
           break;
         default:
-          lineList.get(lc).updateLine();
+          print("BOTH ");
           lineList.get(lc).drawLine();
+          lineList.get(lc).updateLine();
       }
     }
   }
   
-  public void updateFourLines() {
-    stroke(r, g, b);
-    strokeWeight(strokeWidth);
-    noFill();
-    
+  public void updateLines() {
+    setStroke();
     actOnAllLines(LineAction.BOTH);
-    
     updateChangeCounter();
+  }
+  
+  public fourLines copy() 
+  {
+    fourLines copy = new fourLines(0, 0, strokeWidth);
+    copy.setStrokeColor(r, g, b);
+    copy.setChangeCount(changeCounter);
+    
+    // Copy the line list
+    ArrayList<lineWorker> copyLineList = new ArrayList<lineWorker>();
+    for (int lc = 0; lc < lineList.size(); lc++) {
+      copyLineList.add(lineList.get(lc).copy());
+    }
+    copy.setLineList(copyLineList);
+    
+    return copy;
   }
 }
