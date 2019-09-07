@@ -1,5 +1,3 @@
-import java.lang.Cloneable;
-
 class fourLines {
   
   protected ArrayList<lineWorker> lineList;
